@@ -13,6 +13,7 @@ const saveInput = event => {
             formDataObject.message = event.target.value;
         break;
     }
+    console.log(formDataObject);
 
     save('feedback-form-state', formDataObject);
 };
