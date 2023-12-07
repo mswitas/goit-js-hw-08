@@ -1,7 +1,7 @@
 import { save, load } from "./storage";
 import throttle from "lodash.throttle";
 
-const formDataObject = { email: '', message: '' };
+const formDataObject = {email: '', message: ''};
 
 const saveInput = event => {
     
@@ -13,7 +13,6 @@ const saveInput = event => {
             formDataObject.message = event.target.value;
         break;
     }
-    console.log(formDataObject);
 
     save('feedback-form-state', formDataObject);
 };
@@ -23,21 +22,23 @@ const submitHandle = event => {
     const feedbackObject = load('feedback-form-state');
     console.log(feedbackObject);
     localStorage.removeItem('feedback-form-state');
+    formDataObject.email = '';
+    formDataObject.message = '';
     loadFormData();
 };
 
 const loadFormData = () => {
-    const formData = load('feedback-form-state');
+    const restoredForm = load('feedback-form-state');
+    
+    if (restoredForm !== undefined) {
+        formDataObject.email = restoredForm.email;
+        formDataObject.message = restoredForm.message;
+    }
+
     const emailInput = document.querySelector('input[name="email"]');
     const messageInput = document.querySelector('textarea[name="message"]');
-
-    if (formData !== undefined) {
-        emailInput.value = formData.email;
-        messageInput.value = formData.message;
-    } else {
-        emailInput.value = '';
-        messageInput.value = '';
-    }
+    emailInput.value = formDataObject.email;
+    messageInput.value = formDataObject.message;
 };
 
 const form = document.querySelector('form');
